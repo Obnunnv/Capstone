@@ -9,8 +9,12 @@ import os
 
 os.system("clear")
 
+
+
+
 def check_tool(tool):
 	return shutil.which(tool) is not None
+
 
 def get_distro():
 	try:
@@ -26,6 +30,7 @@ def get_distro():
 		pass
 	return "unknown"
 
+
 def suggest_install(tool, distro):
 	commands = {
 		"debian": f"sudo apt update && sudo apt install {tool}",
@@ -36,42 +41,43 @@ def suggest_install(tool, distro):
 	if distro in commands:
 		print(f"[ ] Install {tool} using: {commands[distro]}")
 
+
 def install(tool, distro):
 	if distro == "debian":
 		subprocess.run(f"sudo apt install {tool} -y", shell=True)
+
 	elif distro == "arch":
 		if tool == "wireshark":
 			tool = "wireshark-qt"
 		subprocess.run(f"sudo pacman -S {tool} --noconfirm", shell=True)
+
 	elif distro == "redhat":
 		subprocess.run(f"sudo dnf install {tool} -y", shell=True)
 
+
+
+
 def manual(tools, distro):
+	print(f"Missing tools detected: {', '.join(tools)}")
 	print("How would you like to install missing tools?")
 	print("1. Manually")
 	print("2. Automatically")
 
 	choice = input("> ")
 
-	os.system("clear")  
+	os.system("clear")
 
 	if choice == "1":
 		for tool in tools:
 			suggest_install(tool, distro)
 
 	elif choice == "2":
-		print("Which tool would you like to install?\n1. Nmap\n2. Wireshark\n3. Both")
-		tchoice = input("> ")
+		for tool in tools:
+			print(f"[+] Installing {tool}...")
+			install(tool, distro)
 
-		os.system("clear")  
 
-		if tchoice == "1":
-			install("nmap", distro)
-		elif tchoice == "2":
-			install("wireshark", distro)
-		elif tchoice == "3":
-			install("nmap", distro)
-			install("wireshark", distro)
+
 
 print("Checking required tools...\n")
 
@@ -91,9 +97,9 @@ if missing_tools:
 	manual(missing_tools, distro)
 else:
 	print("\nAll tools are installed!")
+
 time.sleep(3)
 os.system("clear")
-
 
 
 
@@ -113,6 +119,7 @@ def main():
 		print_mini(analysis)
 	elif choice == "2":
 		generate_report(analysis)
+
 
 if __name__ == "__main__":
 	main()
