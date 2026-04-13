@@ -6,20 +6,20 @@ echo "[+] Installing dependencies..."
 sudo apt update
 sudo apt install -y nmap python3 git
 
-echo "[+] Cloning repository..."
-TMP_DIR=$(mktemp -d)
+echo "[+] Installing Capstone into /opt/secscan..."
 
-git clone https://github.com/Obnunnv/Capstone.git "$TMP_DIR/Capstone"
+sudo rm -rf /opt/secscan
+sudo git clone https://github.com/Obnunnv/Capstone.git /opt/secscan
 
-echo "[+] Installing secscan command..."
+echo "[+] Creating command..."
 
-sudo bash -c "cat > /usr/local/bin/secscan" <<EOF
+sudo bash -c 'cat > /usr/local/bin/secscan' <<'EOF'
 #!/bin/bash
-cd $TMP_DIR/Capstone/scan
+cd /opt/secscan/scan
 python3 main.py
 EOF
 
 sudo chmod +x /usr/local/bin/secscan
 
-echo "[+] Installation complete!"
+echo "[+] Done!"
 echo "Run with: secscan"
