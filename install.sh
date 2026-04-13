@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 set -e
 
 echo "[+] Installing dependencies..."
@@ -21,5 +21,6 @@ EOF
 
 sudo chmod +x /usr/local/bin/secscan
 
+clear
 echo "[+] Installation complete!"
 echo "Run with: secscan"
